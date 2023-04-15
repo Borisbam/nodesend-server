@@ -12,5 +12,18 @@
         "src": "/(.*)",
         "dest": "/"
       }
+    ],
+    "headers": [
+      {
+        "source": "/api/(.*)",
+        "methods": [
+          "GET",
+          "POST",
+          "PUT",
+          "PATCH",
+          "OPTIONS",
+          "DELETE"
+        ]
+      }
     ]
   }
