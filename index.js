@@ -12,6 +12,7 @@ const cors = require('cors');
 const corsConfig = {
     origin: process.env.FRONTEND_URL
 }
+console.log(process.env.FRONTEND_URL)
 app.use( cors(corsConfig) );
 // Port
 const port = process.env.PORT || 4000;
