@@ -9,7 +9,8 @@ const connectDB = async () => {
             useFindAndModify: false,
             useCreateIndex: true
         });
-        console.log('DB Connected')
+        console.log('DB Connecteded')
+        console.log(process.env.FRONTEND_URL)
     } catch (error) {
         console.log('DB Connection Error');
         console.log(error);
