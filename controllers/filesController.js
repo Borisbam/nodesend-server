@@ -46,18 +46,18 @@ exports.download = async (req, res, next) => {
 
     // Take link
     const { file } = req.params;
-    console.log(req.params)
-    const link = await Links.findOne({ name: file});
-    const { downloads, name, original_name } = link;
+    
+    const link = await Links.findOne({ nombre: file});
+    const { downloads, nombre, nombre_original } = link;
     const downloadFile = __dirname + '/../uploads/' + file;
-    res.download(downloadFile, original_name);
+    res.download(downloadFile, nombre_original);
 
     
     // If downloads = 1, delete file
     if (downloads === 1) {
 
         // Delete file
-        req.file = name;
+        req.file = nombre;
         // Delete in DB
 
         await Links.findOneAndRemove(link.id)
@@ -68,4 +68,10 @@ exports.download = async (req, res, next) => {
         await link.save();
 
     }
+}
+
+exports.checkUploadFolder = async (req, res, next) => {
+    const folder = fs.existsSync(__dirname + '/../uploads');
+    if(!folder) await fs.promises.mkdir(__dirname + '/../uploads');
+    next();
 }

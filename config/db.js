@@ -10,7 +10,6 @@ const connectDB = async () => {
             useCreateIndex: true
         });
         console.log('DB Connecteded')
-        console.log(process.env.FRONTEND_URL)
     } catch (error) {
         console.log('DB Connection Error');
         console.log(error);

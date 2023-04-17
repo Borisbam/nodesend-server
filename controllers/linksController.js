@@ -20,7 +20,6 @@ exports.newLink = async (req, res, next) => {
     link.nombre_original = nombre_original;
     link.image = image;
 
-
     // If User Authenticated
     if (req.user) {
         
@@ -64,14 +63,13 @@ exports.takeLink = async (req, res, next) => {
 
     // Check if link exists
     const link = await Links.findOne({ url });
-
     if(!link) {
         res.status(404).json({msg: 'El enlace no existe'});
         return next();
     }
 
     // If link exists
-    res.json({file: link.name, original_name: link.original_name, password: false, image: link.image})
+    res.json({file: link.nombre, original_name: link.nombre_original, password: false, image: link.image})
 
     next();
 }

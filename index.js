@@ -4,9 +4,7 @@ const connectDB = require('./config/db');
 // Create server
 
 const app = express();
-console.log('frontend', process.env.FRONTEND_URL)
 connectDB();
-
 // Cors
 const cors = require('cors');
 const corsConfig = {
