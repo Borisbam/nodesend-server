@@ -23,22 +23,22 @@ exports.newLink = async (req, res, next) => {
 
     // If User Authenticated
     if (req.user) {
-        
+
         if (downloads) {
             link.downloads = downloads;
         }
-        if(password) {
+        if (password) {
             const salt = await bcrypt.genSalt(10);
-            link.password = await bcrypt.hash( password, salt );
+            link.password = await bcrypt.hash(password, salt);
         }
 
         link.author = req.user.id;
-    }    
+    }
 
     // Save to DB
     try {
         await link.save();
-        return res.json({ msg : `${link.url}` });
+        return res.json({ msg: `${link.url}` });
     } catch (error) {
         console.log(error);
     }
@@ -46,11 +46,11 @@ exports.newLink = async (req, res, next) => {
 
 // Take all links list
 
-exports.allLinks = async ( req, res) => {
+exports.allLinks = async (req, res) => {
 
     try {
         const links = await Links.find({}).select('url -_id');
-        res.json({links});
+        res.json({ links });
     } catch (error) {
         console.log(error);
     }
@@ -65,32 +65,36 @@ exports.takeLink = async (req, res, next) => {
     // Check if link exists
     const link = await Links.findOne({ url });
 
-    if(!link) {
-        res.status(404).json({msg: 'El enlace no existe'});
+    if (!link) {
+        res.status(404).json({ msg: 'El enlace no existe' });
         return next();
     }
-
+    const file = {
+        file: link.name,
+        original_name: link.original_name,
+        password: false,
+        image: link.image
+    }
     // If link exists
-    res.json({file: link.name, original_name: link.original_name, password: false, image: link.image})
-
-    next();
+    res.status(200).json({ ...file })
+    next()
 }
 
 // Retorna si el enlace tiene password o no
 exports.hasPassword = async (req, res, next) => {
 
-    
+
     const { url } = req.params;
 
     // Verificar si existe el enlace
     const link = await Links.findOne({ url });
 
-    if(!link) {
-        res.status(404).json({msg: 'El enlace no existe'});
+    if (!link) {
+        res.status(404).json({ msg: 'El enlace no existe' });
         return next();
     }
 
-    if(link.password) {
+    if (link.password) {
         return res.json({ password: true, link: link.url });
     }
 
@@ -98,7 +102,7 @@ exports.hasPassword = async (req, res, next) => {
 }
 
 exports.verifyPassword = async (req, res, next) => {
-    
+
     const { url } = req.params;
     const { password } = req.body;
 
@@ -106,11 +110,11 @@ exports.verifyPassword = async (req, res, next) => {
     const link = await Links.findOne({ url });
 
     //Verify Password
-    if(bcrypt.compareSync(password, link.password)) {
+    if (bcrypt.compareSync(password, link.password)) {
         // Enable user to download file        
         next();
     } else {
-        return res.status(401).json({msg: 'Contraseña Incorrecta'})
-    }    
-    
+        return res.status(401).json({ msg: 'Contraseña Incorrecta' })
+    }
+
 }

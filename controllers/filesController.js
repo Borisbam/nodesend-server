@@ -43,14 +43,12 @@ exports.deleteFile = async (req, res) => {
 }
 
 exports.download = async (req, res, next) => {
-
     // Take link
     const { file } = req.params;
-    console.log(req.params)
-    const link = await Links.findOne({ name: file});
-    const { downloads, name, original_name } = link;
-    const downloadFile = __dirname + '/../uploads/' + file;
-    res.download(downloadFile, original_name);
+    const link = await Links.findOne({ url: file});
+    const { downloads, nombre, nombre_original } = link;
+    const downloadFile = __dirname + '/../uploads/' + nombre;
+    res.download(downloadFile, nombre_original);
 
     
     // If downloads = 1, delete file
