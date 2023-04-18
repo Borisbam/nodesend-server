@@ -20,7 +20,6 @@ exports.newLink = async (req, res, next) => {
     link.nombre_original = nombre_original;
     link.image = image;
 
-
     // If User Authenticated
     if (req.user) {
 

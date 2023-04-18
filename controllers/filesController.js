@@ -55,7 +55,7 @@ exports.download = async (req, res, next) => {
     if (downloads === 1) {
 
         // Delete file
-        req.file = name;
+        req.file = nombre;
         // Delete in DB
 
         await Links.findOneAndRemove(link.id)
@@ -66,4 +66,10 @@ exports.download = async (req, res, next) => {
         await link.save();
 
     }
+}
+
+exports.checkUploadFolder = async (req, res, next) => {
+    const folder = fs.existsSync(__dirname + '/../uploads');
+    if(!folder) await fs.promises.mkdir(__dirname + '/../uploads');
+    next();
 }
